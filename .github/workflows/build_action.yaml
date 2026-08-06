@@ -12,10 +12,8 @@ jobs:
           node-version-file: "package.json"
       - run: npm install
       - name: Build action (if not already built)
-        if: "!startsWith(github.ref, 'refs/heads/release')"
         run: npm run build
       - name: Push build into cache
-        if: "!startsWith(github.ref, 'refs/heads/release')"
         uses: actions/cache@v6
         with:
           path: dist

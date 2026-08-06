@@ -15580,8 +15580,6 @@ async function run() {
     const image = core.getInput('image');
     const path = core.getInput('path');
     const destination = core.getInput('destination') || `extracted-${Date.now()}`;
-    const shell = core.getInput('shell');
-
     if (!core.getInput('destination')) {
       core.notice([
         'As you did not specify a docker extract destination, the default is being used.',
@@ -15592,10 +15590,17 @@ async function run() {
       ].join(' '));
     }
 
-    const create = `docker cp $(docker create ${image}):/${path} ${destination}`;
+    await exec.exec('mkdir', ['-p', destination]);
 
-    await exec.exec(`mkdir -p ${destination}`);
-    await exec.exec(`${shell} -c "${create}"`, []);
+    let containerId = '';
+    await exec.exec('docker', ['create', image], {
+      listeners: {
+        stdout: (data) => { containerId += data.toString(); },
+      },
+    });
+    containerId = containerId.trim();
+
+    await exec.exec('docker', ['cp', `${containerId}:/${path}`, destination]);
 
     core.setOutput('destination', destination);
   } catch (error) {
