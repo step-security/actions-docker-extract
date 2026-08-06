@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.4",
-    "@actions/exec": "^1.0.4",
+    "@actions/exec": "^3.0.0",
     "axios": "^1.19.0"
   },
   "devDependencies": {
