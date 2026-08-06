@@ -1,0 +1,59 @@
+name: Test Cross Platform Support
+
+on: [pull_request]
+
+jobs:
+  action:
+    uses: ./.github/workflows/build_action.yaml
+  linux:
+    runs-on: ubuntu-latest
+    needs:
+      - action
+    name: Extract Example File on Ubuntu
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: "package.json"
+      - name: Load action build from cache
+        uses: actions/cache@v6
+        with:
+          path: dist
+          key: build-${{ github.sha }}
+      - run: docker build -t example:${{ github.sha }} ./.github/tests
+      - uses: ./
+        id: extract
+        with:
+          image: example:${{ github.sha }}
+          path: /files/001.txt
+      - run: test -e ${{ steps.extract.outputs.destination }}/001.txt || exit 1
+  macos:
+    runs-on: macos-15
+    if: false # Temporarily disabled due to issues with Docker in macos GitHub Runners
+    needs:
+      - action
+    name: Extract Example File on macOS
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: "package.json"
+      - name: Install Docker
+        uses: douglascamata/setup-docker-macos-action@v1
+      - run: docker build -t example:${{ github.sha }} ./.github/tests
+      - name: Load action build from cache
+        uses: actions/cache@v6
+        with:
+          path: dist
+          key: build-${{ github.sha }}
+      - uses: ./
+        id: extract
+        with:
+          image: example:${{ github.sha }}
+          path: /files/001.txt
+      - run: test -e ${{ steps.extract.outputs.destination }}/001.txt || exit 1
+  windows:
+    runs-on: windows-latest
+    name: Extract Example File on Windows
+    steps:
+      - run: echo "Docker is not supported in GitHub's hosted Windows runners"

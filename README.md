@@ -1,1 +1,96 @@
-# actions-docker-extract
+[![StepSecurity Maintained Action](https://raw.githubusercontent.com/step-security/maintained-actions-assets/main/assets/maintained-action-banner.png)](https://docs.stepsecurity.io/actions/stepsecurity-maintained-actions)
+
+# Docker Extract
+
+A GitHub Action for extracting files from a Docker Image.
+
+```yaml
+- uses: step-security/actions-docker-extract@v4
+  with:
+    image: "ghost:alpine"
+    path: "/var/lib/ghost/current/core/built/assets/."
+```
+
+## Inputs
+
+| ID            | Description                                          | Required | Examples                                      |
+| ------------- | ---------------------------------------------------- | :------: | --------------------------------------------- |
+| `image`       | Docker Image to extract files from                   |    ✅    | `alpine` `ghcr.io/github/super-linter:latest` |
+| `path`        | Path (from root) to a file or directory within Image |    ✅    | `files/example.txt` `files` `files/.`         |
+| `destination` | Destination path for the extracted files             |    ❌    | `/foo/` `~/` `./foo/bar`                      |
+| `shell`       | The shell to use for extraction                      |    ❌    | `/bin/bash` `/bin/sh`                         |
+
+> :paperclip: To copy the **contents** of a directory the `path` must end with
+> `/.` otherwise the directory itself will be copied. More information about the
+> specific rules can be found via the [docker cp][docker-cp] documentation.
+
+## Outputs
+
+| ID            | Description                                       | Example                  |
+| ------------- | ------------------------------------------------- | ------------------------ |
+| `destination` | Destination path containing the extracted file(s) | `extracted-1598717412/` |
+
+## Examples
+
+### Build, Extract
+
+Using [step-security/docker-build-push-action][build-push-action] to build a Docker
+Image and then extract the contents of the `/app` directory within the newly
+built image to upload as a `dist` artifact.
+
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build Docker Image
+        uses: step-security/docker-build-push-action@v7
+        with:
+          tags: my-example-image:latest
+          load: true
+      - uses: step-security/actions-docker-extract@v4
+        id: extract
+        with:
+          image: my-example-image:latest
+          path: /app/.
+          destination: dist
+      - name: Upload Dist
+        uses: actions/upload-artifact@v7
+        with:
+          path: dist
+```
+
+### Login, Pull, Extract
+
+Using [step-security/docker-login-action][login-action] to authenticate with the GitHub
+Container Registry to extract from a published Docker Image.
+
+```yaml
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Login to GitHub Container Registry
+        uses: step-security/docker-login-action@v4
+        with:
+          registry: "ghcr.io"
+          username: "${{ github.actor }}"
+          password: "${{ secrets.GITHUB_TOKEN }}"
+      - uses: step-security/actions-docker-extract@v4
+        id: extract
+        with:
+          image: ghcr.io/${{ github.repository }}:latest
+          path: /app/.
+          destination: dist
+      - name: Upload Dist
+        uses: actions/upload-artifact@v7
+        with:
+          path: dist
+```
+
+[build-push-action]: https://github.com/step-security/docker-build-push-action
+[/login-action]: https://github.com/step-security/docker-login-action
+[docker-cp]: https://docs.docker.com/engine/reference/commandline/cp/#extended-description
+[tags]: https://github.com/step-security/actions-docker-extract/tags
