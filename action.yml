@@ -1,6 +1,6 @@
 name: 'Docker Extract'
 description: 'Extract file(s) from a Docker Image'
-author: 'Samuel Ryan <sam@samryan.co.uk>'
+author: 'step-security'
 inputs:
   image:
     description: 'Docker Image to extract files from'

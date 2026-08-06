@@ -34,7 +34,7 @@ A GitHub Action for extracting files from a Docker Image.
 
 ### Build, Extract
 
-Using [docker/build-push-action][build-push-action] to build a Docker
+Using [step-security/docker-build-push-action][build-push-action] to build a Docker
 Image and then extract the contents of the `/app` directory within the newly
 built image to upload as a `dist` artifact.
 
@@ -43,9 +43,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Build Docker Image
-        uses: docker/build-push-action@v7
+        uses: step-security/docker-build-push-action@v7
         with:
           tags: my-example-image:latest
           load: true
@@ -63,7 +63,7 @@ jobs:
 
 ### Login, Pull, Extract
 
-Using [docker/login-action][login-action] to authenticate with the GitHub
+Using [step-security/docker-login-action][login-action] to authenticate with the GitHub
 Container Registry to extract from a published Docker Image.
 
 ```yaml
@@ -71,9 +71,9 @@ jobs:
   extract:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v4
+        uses: step-security/docker-login-action@v4
         with:
           registry: "ghcr.io"
           username: "${{ github.actor }}"
@@ -107,8 +107,8 @@ The blog post
 [Package GitHub Actions automatically with GitHub Actions][blog/package-automatically]
 describes how this is achieved.
 
-[build-push-action]: https://github.com/docker/build-push-action
-[login-action]: https://github.com/docker/login-action
+[build-push-action]: https://github.com/step-security/docker-build-push-action
+[/login-action]: https://github.com/step-security/docker-login-action
 [docker-cp]: https://docs.docker.com/engine/reference/commandline/cp/#extended-description
 [tags]: https://github.com/step-security/actions-docker-extract/tags
 [blog/package-automatically]: https://medium.com/prompt/package-github-actions-automatically-with-github-actions-a70b9f7bae4

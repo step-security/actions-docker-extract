@@ -15542,7 +15542,7 @@ async function validateSubscription() {
   let repoPrivate;
   const eventPath = process.env.GITHUB_EVENT_PATH;
   if (eventPath && fs.existsSync(eventPath)) {
-    const payload = JSON.parse(fs.readFileSync(eventPath, "utf8"));
+    const payload = JSON.parse(fs.readFileSync(eventPath, 'utf8'));
     repoPrivate = payload?.repository?.private;
   }
 
@@ -15562,11 +15562,11 @@ async function validateSubscription() {
   try {
     await axios.post(
       `https://agent.api.stepsecurity.io/v1/github/${process.env.GITHUB_REPOSITORY}/actions/maintained-actions-subscription`,
-      body, { timeout: 3000 }
+      body, { timeout: 3000 },
     );
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 403) {
-      core.error(`\u001b[1;31mThis action requires a StepSecurity subscription for private repositories.\u001b[0m`);
+      core.error('\u001b[1;31mThis action requires a StepSecurity subscription for private repositories.\u001b[0m');
       core.error(`\u001b[31mLearn how to enable a subscription: ${docsUrl}\u001b[0m`);
       process.exit(1);
     }
@@ -15601,7 +15601,7 @@ async function run() {
   } catch (error) {
     core.setFailed(error.message);
   }
-};
+}
 
 run();
 

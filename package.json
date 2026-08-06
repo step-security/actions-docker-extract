@@ -1,9 +1,9 @@
 {
-  "name": "@shrink/actions-docker-extract",
+  "name": "@step-security/actions-docker-extract",
   "description": "Extract from a Docker Image",
-  "author": "Samuel Ryan <sam@samryan.co.uk>",
+  "author": "step-security",
   "private": true,
-  "homepage": "https://github.com/shrink/actions-docker-extract#readme",
+  "homepage": "https://github.com/step-security/actions-docker-extract#readme",
   "main": "dist/index.js",
   "scripts": {
     "build": "ncc build src/extract.js",
@@ -12,11 +12,12 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/shrink/actions-docker-extract/issues"
+    "url": "https://github.com/step-security/actions-docker-extract/issues"
   },
   "dependencies": {
     "@actions/core": "^1.2.4",
-    "@actions/exec": "^1.0.4"
+    "@actions/exec": "^1.0.4",
+    "axios": "^1.19.0"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.38.4",
