@@ -90,19 +90,6 @@ jobs:
           path: dist
 ```
 
-## Automatic Release Packaging
-
-A Workflow packages the Action automatically when a collaborator created a new
-tag. Any reference to this Action in a Workflow must use a [tag][tags] (mutable)
-or the commit hash of a tag (immutable).
-
-```yaml
-✅ uses: step-security/actions-docker-extract@v4
-✅ uses: step-security/actions-docker-extract@v4.0.0
-✅ uses: step-security/actions-docker-extract@40400b42f4f8b663c647f535e2c6674658e39fc6
-❌ uses: step-security/actions-docker-extract@main
-```
-
 The blog post
 [Package GitHub Actions automatically with GitHub Actions][blog/package-automatically]
 describes how this is achieved.
