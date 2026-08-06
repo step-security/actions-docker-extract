@@ -90,12 +90,7 @@ jobs:
           path: dist
 ```
 
-The blog post
-[Package GitHub Actions automatically with GitHub Actions][blog/package-automatically]
-describes how this is achieved.
-
 [build-push-action]: https://github.com/step-security/docker-build-push-action
 [/login-action]: https://github.com/step-security/docker-login-action
 [docker-cp]: https://docs.docker.com/engine/reference/commandline/cp/#extended-description
 [tags]: https://github.com/step-security/actions-docker-extract/tags
-[blog/package-automatically]: https://medium.com/prompt/package-github-actions-automatically-with-github-actions-a70b9f7bae4
